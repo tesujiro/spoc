@@ -1,0 +1,2 @@
+$COMMAND -id get playlists| grep 1QyQNY2zoE4wWS10RhdInX | wc -l
+       1

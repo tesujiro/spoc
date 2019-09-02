@@ -1,0 +1,2 @@
+$COMMAND get playlists | grep hello
+Playlist[1]:	1QyQNY2zoE4wWS10RhdInX	tracks:2	name:hello world	desc:	
