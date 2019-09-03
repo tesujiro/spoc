@@ -96,7 +96,11 @@ func albums(token string, endpoint string, ids []string) {
 			os.Exit(1)
 		}
 		for i, album := range albums.Albums {
-			fmt.Printf("Album[%v]: %s\n", start+i, album)
+			if flagOnlyIDs {
+				fmt.Println(album)
+			} else {
+				fmt.Printf("Album[%v]: %s\n", start+i, album)
+			}
 		}
 	}
 }
