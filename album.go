@@ -36,24 +36,23 @@ type Album struct {
 	URI                  string
 }
 
-func (album Album) Print() {
+func (album Album) String() string {
 	if flagOnlyIDs {
-		fmt.Printf("%v\t", album.Id)
-		return
+		return fmt.Sprintf("%v\t", album.Id)
 	}
-	fmt.Printf("%v\t", album.Id)
-	fmt.Printf("name:%v\t", album.Name)
-	fmt.Printf("release:%v\t", album.ReleaseDate)
-	fmt.Printf("artists:")
+	var s string
+	s += fmt.Sprintf("%v\t", album.Id)
+	s += fmt.Sprintf("name:%v\t", album.Name)
+	s += fmt.Sprintf("release:%v\t", album.ReleaseDate)
+	s += fmt.Sprintf("artists:")
 	for _, artist := range album.Artists {
-		fmt.Printf(" %v", artist.Name)
+		s += fmt.Sprintf(" %v", artist.Name)
 	}
-	fmt.Printf("\n")
-	fmt.Printf("tracks:")
+	s += fmt.Sprintf("\ttracks:")
 	for i, track := range album.Tracks.Items {
-		fmt.Printf(" %v:%v", i, track.Name)
+		s += fmt.Sprintf(" %v:%v", i, track.Name)
 	}
-	fmt.Printf("\n")
+	return s
 }
 
 func album(token string, endpoint string) {
@@ -68,7 +67,7 @@ func album(token string, endpoint string) {
 		log.Print(err)
 		os.Exit(1)
 	}
-	album.Print()
+	fmt.Printf("%v\n", album)
 }
 
 func albums(token string, endpoint string, ids []string) {
@@ -97,8 +96,7 @@ func albums(token string, endpoint string, ids []string) {
 			os.Exit(1)
 		}
 		for i, album := range albums.Albums {
-			fmt.Printf("Album[%v]: ", start+i)
-			album.Print()
+			fmt.Printf("Album[%v]: %s\n", start+i, album)
 		}
 	}
 }
