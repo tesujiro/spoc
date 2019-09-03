@@ -10,16 +10,17 @@ import (
 
 func usage() {
 	fmt.Println("Usage:")
-	fmt.Print(`	cli search [-id] album(s)|artist(s)|playlist(s)|track(s) [keyword]
-	cli [-id] get profile [user_id]+
-	cli [-id] get playlist [playlist_id]+
-	cli [-id] get playlists [user_id]+
-	cli [-id] list device(s)
-	cli [-id] list playlist(s)
-	cli [-id] list profile
-	cli [-id] play [device_id]
-	cli [-id] play next [device_id]
-	cli [-id] play previous [device_id]
+	fmt.Print(`	spoc search [-id] album(s)|artist(s)|playlist(s)|track(s) [keyword]
+	spoc [-id] get album(s) [album_id]+
+	spoc [-id] get profile [user_id]+
+	spoc [-id] get playlist [playlist_id]+
+	spoc [-id] get playlists [user_id]+
+	spoc [-id] list device(s)
+	spoc [-id] list playlist(s)
+	spoc [-id] list profile
+	spoc [-id] play [device_id]
+	spoc [-id] play next [device_id]
+	spoc [-id] play previous [device_id]
 `)
 }
 
@@ -50,24 +51,20 @@ func main() {
 	cmd := os.Args[0]
 	args := os.Args[1:]
 
-	/*
-		if os.Getenv("ReverseProxy") != "" {
-			base_url = "http://localhost:8080"
-		}
-	*/
 	endpoint := map[string]string{
-		"devices/me": base_url + "/v1/me/player/devices",
-		"search":     base_url + "/v1/search",
-		//"player/me":    base_url+"/v1/me/player/",
+		"album":         base_url + "/v1/albums/{id}",
+		"album/tracks":  base_url + "/v1/albums/{id}/tracks",
+		"albums":        base_url + "/v1/albums",
+		"devices/me":    base_url + "/v1/me/player/devices",
+		"search":        base_url + "/v1/search",
 		"play/me":       base_url + "/v1/me/player/play",
 		"play/next":     base_url + "/v1/me/player/next",
 		"play/previous": base_url + "/v1/me/player/previous",
 		"playlist":      base_url + "/v1/playlists/{playlist_id}",
 		"playlists/me":  base_url + "/v1/me/playlists",
 		"playlists":     base_url + "/v1/users/{user_id}/playlists",
-		//"profile/me":   base_url+"/v1/me",
-		"profile/me": base_url + "/v1/me",
-		"profile":    base_url + "/v1/users/{user_id}",
+		"profile/me":    base_url + "/v1/me",
+		"profile":       base_url + "/v1/users/{user_id}",
 	}
 	switch cmd {
 	case "search":
@@ -76,6 +73,18 @@ func main() {
 		obj := args[0]
 		args = args[1:]
 		switch obj {
+		case "album", "albums":
+			switch len(args) {
+			case 0:
+				usage()
+				os.Exit(1)
+			case 1:
+				id := args[0]
+				ep := strings.ReplaceAll(endpoint["album"], "{id}", id)
+				album(token, ep)
+			default:
+				albums(token, endpoint["albums"], args)
+			}
 		case "profile":
 			if len(args) == 0 {
 				profile(token, endpoint["profile/me"])

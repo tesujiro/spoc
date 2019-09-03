@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Timestamp time.Time
 
@@ -33,8 +36,18 @@ type PagingPlaylistTracks struct {
 	Items []PlaylistTrack
 }
 
+type PagingTracks struct {
+	PagingBase
+	Items []Track
+}
+
 type ExternalIDs map[string]string
 type ExternalURLs map[string]string
+
+type Copyright struct {
+	Text string
+	Type string
+}
 
 type Followers struct {
 	Href  string
@@ -75,16 +88,41 @@ type Album struct {
 	AlbumType            string
 	Artists              []Artist
 	AvailableMarkets     []string
+	Copyrights           []Copyright
+	ExternalIDs          ExternalIDs  `json:"external_ids"`
 	ExternalURLs         ExternalURLs `json:"external_urls"`
+	Genres               []string
 	Href                 string
 	Id                   string
 	Images               []Image
 	Name                 string
+	Popularity           int
 	ReleaseDate          string `json:"release_date"`
 	ReleaseDatePrecision string `json:"release_date_precision"`
+	Tracks               PagingTracks
 	Restrictions         Restrictions
 	Type                 string
 	URI                  string
+}
+
+func (album Album) Print() {
+	if flagOnlyIDs {
+		fmt.Printf("%v\t", album.Id)
+		return
+	}
+	fmt.Printf("%v\t", album.Id)
+	fmt.Printf("name:%v\t", album.Name)
+	fmt.Printf("release:%v\t", album.ReleaseDate)
+	fmt.Printf("artists:")
+	for _, artist := range album.Artists {
+		fmt.Printf(" %v", artist.Name)
+	}
+	fmt.Printf("\n")
+	fmt.Printf("tracks:")
+	for i, track := range album.Tracks.Items {
+		fmt.Printf(" %v:%v", i, track.Name)
+	}
+	fmt.Printf("\n")
 }
 
 type Artist struct {
