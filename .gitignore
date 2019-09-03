@@ -1,3 +1,7 @@
+*
+!*.*
 .*.swp
+*.gob
+*.log
 spoc
 setenv.sh
