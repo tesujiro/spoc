@@ -67,5 +67,8 @@ func call(token, method, endpoint string, params url.Values, body io.Reader) ([]
 	if err != nil {
 		return nil, err
 	}
+	if flagRawJson {
+		fmt.Println(string(b))
+	}
 	return b, nil
 }

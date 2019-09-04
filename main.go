@@ -28,6 +28,7 @@ const base_url = "https://api.spotify.com"
 
 var (
 	flagOnlyIDs bool
+	flagRawJson bool
 )
 
 func main() {
@@ -39,6 +40,7 @@ func main() {
 
 	f := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 	f.BoolVar(&flagOnlyIDs, "id", false, "displays only IDs")
+	f.BoolVar(&flagRawJson, "json", false, "displays raw json")
 	f.Parse(os.Args[1:])
 	os.Args = f.Args()
 
