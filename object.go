@@ -15,16 +15,6 @@ type PagingBase struct {
 	Previous string
 }
 
-type PagingPlaylists struct {
-	PagingBase
-	Items []Playlist
-}
-
-type PagingPlaylistTracks struct {
-	PagingBase
-	Items []PlaylistTrack
-}
-
 type ExternalIDs map[string]string
 type ExternalURLs map[string]string
 
@@ -65,28 +55,4 @@ type Device struct {
 	Name             string
 	Type             string
 	VolumePercent    int `json:"volume_percent"`
-}
-
-type Playlist struct {
-	Collaborative bool
-	Description   string
-	ExternalURLs  ExternalURLs `json:"external_urls"`
-	Followers     Followers
-	Href          string
-	Id            string
-	Images        []Image
-	Name          string
-	Owner         User
-	Public        bool
-	SnapshotId    string `json:"snapshot_id"`
-	Tracks        PagingPlaylistTracks
-	Type          string
-	URI           string
-}
-
-type PlaylistTrack struct {
-	AddedAt Timestamp
-	AddedBy User
-	IsLocal bool
-	Track   Track
 }
