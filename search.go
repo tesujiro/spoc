@@ -71,7 +71,6 @@ func search(token string, endpoint string, args []string) {
 			if !flagOnlyIDs {
 				fmt.Printf("Album[%v]:\t%v\n", i, album)
 			} else {
-				//fmt.Printf("%v\n", album.Id)
 				fmt.Printf("%v\n", album)
 			}
 		}
@@ -89,16 +88,14 @@ func search(token string, endpoint string, args []string) {
 			log.Print(err)
 			os.Exit(1)
 		}
-		//spew.Dump(artists)
-		fmt.Println("Total:", artists.Artists.Total)
+		if !flagOnlyIDs {
+			fmt.Println("Total:", artists.Artists.Total)
+		}
 		for i, artist := range artists.Artists.Items {
-			if !flagOnlyIDs {
-				fmt.Printf("Artists[%v]:\t", i)
-				fmt.Printf("%v\t", artist.Id)
-				fmt.Printf("name:%v\t", artist.Name)
-				fmt.Printf("\n")
-			} else {
+			if flagOnlyIDs {
 				fmt.Printf("%v\n", artist.Id)
+			} else {
+				fmt.Printf("Artists[%v]:\t%v\n", i, artist)
 			}
 		}
 	case "playlist", "playlists":
@@ -135,32 +132,20 @@ func search(token string, endpoint string, args []string) {
 			log.Print(err)
 			os.Exit(1)
 		}
-		//fmt.Println("b=", string(b))
 		var tracks struct {
-			Tracks struct {
-				PagingBase
-				Items []Track
-			}
+			Tracks PagingTracks
 		}
 		err = json.Unmarshal(b, &tracks)
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
 		}
-		fmt.Println("Total:", tracks.Tracks.Total)
+		if !flagOnlyIDs {
+			fmt.Println("Total:", tracks.Tracks.Total)
+		}
 		for i, track := range tracks.Tracks.Items {
 			if !flagOnlyIDs {
-				fmt.Printf("Track[%v]:\t", i)
-				fmt.Printf("%v\t", track.Id)
-				fmt.Printf("name:%v\t", track.Name)
-				fmt.Printf("%v (", track.Name)
-				sep := ""
-				for _, a := range track.Artists {
-					fmt.Printf("%v%v", sep, a.Name)
-					sep = ", "
-				}
-				fmt.Printf(") album: \"%v\"", track.Album.Name)
-				fmt.Printf("\n")
+				fmt.Printf("Track[%v]:\t%v\n", i, track)
 			} else {
 				fmt.Printf("%v\n", track.Id)
 			}
