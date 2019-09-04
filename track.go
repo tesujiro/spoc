@@ -15,26 +15,33 @@ type TrackLink struct {
 	URI          string
 }
 
-type Track struct {
-	Album            Album
+type SimplifiedTrack struct {
 	Artists          []Artist
 	AvailableMarkets []string `json:"available_markets"`
 	DiscNumber       int      `json:"disc_number"`
 	DurationMs       int      `json:"duration_ms"`
 	Explicit         bool
-	ExternalIDs      ExternalIDs  `json:"external_ids"`
 	ExternalURLs     ExternalURLs `json:"external_urls"`
 	Href             string
 	Id               string
 	IsPlayable       bool      `json:"is_playable"`
 	LinkedFrom       TrackLink `json:"linked_from"`
 	Name             string
-	Popularity       int
 	PreviewURL       string `json:"preview_url"`
 	TrackNumber      int    `json:"track_number"`
 	Type             string
 	URI              string
 }
+
+type Track struct {
+	SimplifiedTrack
+	Album       SimplifiedAlbum
+	ExternalIDs ExternalIDs `json:"external_ids"`
+	Popularity  int
+}
+
+//func (track SimplifiedTrack) String() string {
+//}
 
 func (track Track) String() string {
 	if flagOnlyIDs {
