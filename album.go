@@ -11,39 +11,61 @@ import (
 
 type PagingAlbums struct {
 	PagingBase
-	Items []Album
+	Items []SimplifiedAlbum
 }
 
-type Album struct {
-	AlbumGroup           string
+type SimplifiedAlbum struct {
 	AlbumType            string
 	Artists              []Artist
 	AvailableMarkets     []string
-	Copyrights           []Copyright
-	ExternalIDs          ExternalIDs  `json:"external_ids"`
 	ExternalURLs         ExternalURLs `json:"external_urls"`
-	Genres               []string
 	Href                 string
 	Id                   string
 	Images               []Image
 	Name                 string
-	Popularity           int
 	ReleaseDate          string `json:"release_date"`
 	ReleaseDatePrecision string `json:"release_date_precision"`
-	Tracks               PagingTracks
-	Restrictions         Restrictions
+	TotalTracks          int    `json:"total_tracks"`
 	Type                 string
 	URI                  string
 }
 
-func (album Album) String() string {
+type Album struct {
+	SimplifiedAlbum
+	AlbumGroup  string
+	Copyrights  []Copyright
+	ExternalIDs ExternalIDs `json:"external_ids"`
+	Genres      []string
+	Label       string
+	Popularity  int
+	Tracks      PagingTracks
+}
+
+func (album SimplifiedAlbum) String() string {
 	if flagOnlyIDs {
-		return fmt.Sprintf("%v\t", album.Id)
+		return fmt.Sprintf("%v", album.Id)
 	}
 	var s string
 	s += fmt.Sprintf("%v\t", album.Id)
 	s += fmt.Sprintf("name:%v\t", album.Name)
 	s += fmt.Sprintf("release:%v\t", album.ReleaseDate)
+	s += fmt.Sprintf("tracks:%v\t", album.TotalTracks)
+	s += fmt.Sprintf("artists:")
+	for _, artist := range album.Artists {
+		s += fmt.Sprintf(" %v", artist.Name)
+	}
+	return s
+}
+
+func (album Album) String() string {
+	if flagOnlyIDs {
+		return fmt.Sprintf("%v", album.Id)
+	}
+	var s string
+	s += fmt.Sprintf("%v\t", album.Id)
+	s += fmt.Sprintf("name:%v\t", album.Name)
+	s += fmt.Sprintf("release:%v\t", album.ReleaseDate)
+	s += fmt.Sprintf("label:%v\t", album.Label)
 	s += fmt.Sprintf("artists:")
 	for _, artist := range album.Artists {
 		s += fmt.Sprintf(" %v", artist.Name)

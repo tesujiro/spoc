@@ -1,13 +1,13 @@
 $COMMAND search album u-zhaan
 Total: 11
-Album[0]:	0PdNfCyId9ZFiMX2uJBFqT	name:Tabla Rock Mountain	artists: U-zhaan
-Album[1]:	6hBq7Y165fNh00E1nlWLW2	name:2 Tone	artists: Shuta Hasunuma U-zhaan
-Album[2]:	5A2Gqx8D5ItZy8cJOfCWEg	name:エナジー風呂	artists: U-zhaan Ryuichi Sakamoto
-Album[3]:	1VjHT1Y0jhx7ijcVToYChO	name:「マンガをはみだした男 ~赤塚不二夫~」オリジナル・サウンドトラック	artists: U-zhaan Shuta Hasunuma
-Album[4]:	7pKaHdSyrNkO3JmcPkC6z0	name:energy flow (rework)	artists: U-zhaan Ryuichi Sakamoto
-Album[5]:	2AlIxVHsaJZqe2NpmNv13I	name:Hence	artists: Oren Ambarchi Jim O'Rourke U-zhaan
-Album[6]:	1QAVKFvvuTIDJfRioMnhLz	name:Tabla, Tabla & Tabla	artists: salmon cooks U-zhaan
-Album[7]:	647AuRY34T1Q3yBOeswAz1	name:四味一体	artists: 五五七二三二〇 with RYO the SKYWALKER & U-zhaan & banvox & HIFANA & The Ventures
-Album[8]:	4bovrS8QTqU8pEnhLdXaZU	name:ガラパゴス・ビスケット	artists: 五五七二三二〇 with U-zhaan
-Album[9]:	7ptpUHqDgDOg6bAr8ECc4k	name:Tabla Makes Everything	artists: salmon cooks U-zhaan
-Album[10]:	5zV3mUjkRuVuo0yFCCeMJh	name:Tabla 100% Edit	artists: salmon cooks U-zhaan
+Album[0]:	0PdNfCyId9ZFiMX2uJBFqT	name:Tabla Rock Mountain	release:2014-10-08	tracks:9	artists: U-zhaan
+Album[1]:	6hBq7Y165fNh00E1nlWLW2	name:2 Tone	release:2017-02-22	tracks:12	artists: Shuta Hasunuma U-zhaan
+Album[2]:	5A2Gqx8D5ItZy8cJOfCWEg	name:エナジー風呂	release:2019-04-24	tracks:1	artists: U-zhaan Ryuichi Sakamoto
+Album[3]:	1VjHT1Y0jhx7ijcVToYChO	name:「マンガをはみだした男 ~赤塚不二夫~」オリジナル・サウンドトラック	release:2016-04-23	tracks:15	artists: U-zhaan Shuta Hasunuma
+Album[4]:	7pKaHdSyrNkO3JmcPkC6z0	name:energy flow (rework)	release:2018-09-26	tracks:1	artists: U-zhaan Ryuichi Sakamoto
+Album[5]:	2AlIxVHsaJZqe2NpmNv13I	name:Hence	release:2018-11-23	tracks:2	artists: Oren Ambarchi Jim O'Rourke U-zhaan
+Album[6]:	1QAVKFvvuTIDJfRioMnhLz	name:Tabla, Tabla & Tabla	release:2011-10-26	tracks:27	artists: salmon cooks U-zhaan
+Album[7]:	647AuRY34T1Q3yBOeswAz1	name:四味一体	release:2016-11-07	tracks:1	artists: 五五七二三二〇 with RYO the SKYWALKER & U-zhaan & banvox & HIFANA & The Ventures
+Album[8]:	4bovrS8QTqU8pEnhLdXaZU	name:ガラパゴス・ビスケット	release:2016-10-26	tracks:1	artists: 五五七二三二〇 with U-zhaan
+Album[9]:	7ptpUHqDgDOg6bAr8ECc4k	name:Tabla Makes Everything	release:2010-10-18	tracks:6	artists: salmon cooks U-zhaan
+Album[10]:	5zV3mUjkRuVuo0yFCCeMJh	name:Tabla 100% Edit	release:2005-05-26	tracks:12	artists: salmon cooks U-zhaan
