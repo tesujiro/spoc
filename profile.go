@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-func profile(token string, endpoint string) {
-	b, err := get(token, endpoint, nil)
+func (spoc *Spoc) profile(endpoint string) {
+	b, err := spoc.get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)

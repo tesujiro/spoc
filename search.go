@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func _search(token, endpoint, target string, args []string) ([]byte, error) {
+func (spoc *Spoc) _search(endpoint, target string, args []string) ([]byte, error) {
 	params := url.Values{}
 	params.Add("limit", fmt.Sprintf("%v", 50))
 	params.Add("type", target)
@@ -16,17 +16,17 @@ func _search(token, endpoint, target string, args []string) ([]byte, error) {
 		params.Add("q", arg)
 	}
 	//fmt.Printf("%#v\n", params)
-	return get(token, endpoint, params)
+	return spoc.get(endpoint, params)
 }
 
-func search(token string, endpoint string, args []string) {
+func (spoc *Spoc) search(endpoint string, args []string) {
 	if len(args) < 2 {
 		usage()
 		os.Exit(1)
 	}
 	switch args[0] {
 	case "album", "albums":
-		b, err := _search(token, endpoint, "album", args[1:])
+		b, err := spoc._search(endpoint, "album", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
@@ -75,7 +75,7 @@ func search(token string, endpoint string, args []string) {
 			}
 		}
 	case "artist", "artists":
-		b, err := _search(token, endpoint, "artist", args[1:])
+		b, err := spoc._search(endpoint, "artist", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
@@ -99,7 +99,7 @@ func search(token string, endpoint string, args []string) {
 			}
 		}
 	case "playlist", "playlists":
-		b, err := _search(token, endpoint, "playlist", args[1:])
+		b, err := spoc._search(endpoint, "playlist", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
@@ -127,7 +127,7 @@ func search(token string, endpoint string, args []string) {
 			}
 		}
 	case "track", "tracks":
-		b, err := _search(token, endpoint, "track", args[1:])
+		b, err := spoc._search(endpoint, "track", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)

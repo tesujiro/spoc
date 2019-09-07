@@ -20,15 +20,15 @@ type SpotifyAPI struct {
 }
 */
 
-func get(token, endpoint string, params url.Values) ([]byte, error) {
-	return call(token, "GET", endpoint, params, nil)
+func (spoc *Spoc) get(endpoint string, params url.Values) ([]byte, error) {
+	return spoc.call("GET", endpoint, params, nil)
 }
 
-func put(token string, endpoint string, params url.Values, body io.Reader) ([]byte, error) {
-	return call(token, "PUT", endpoint, params, body)
+func (spoc *Spoc) put(endpoint string, params url.Values, body io.Reader) ([]byte, error) {
+	return spoc.call("PUT", endpoint, params, body)
 }
 
-func call(token, method, endpoint string, params url.Values, body io.Reader) ([]byte, error) {
+func (spoc *Spoc) call(method, endpoint string, params url.Values, body io.Reader) ([]byte, error) {
 	if os.Getenv("ReverseProxy") != "" {
 		proxy := os.Getenv("ReverseProxy")
 		endpoint = strings.Replace(endpoint, base_url, proxy, 1)
@@ -46,7 +46,7 @@ func call(token, method, endpoint string, params url.Values, body io.Reader) ([]
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Authorization", "Bearer "+spoc.token)
 
 	var client *http.Client
 	client = http.DefaultClient

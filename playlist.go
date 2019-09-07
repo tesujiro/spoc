@@ -79,8 +79,8 @@ func (playlist Playlist) PrintDetail() {
 	}
 }
 
-func playlist(token string, endpoint string) {
-	b, err := get(token, endpoint, nil)
+func (spoc *Spoc) playlist(endpoint string) {
+	b, err := spoc.get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)
@@ -121,8 +121,8 @@ func playlist(token string, endpoint string) {
 	playlist.PrintDetail()
 }
 
-func playlists(token string, endpoint string) {
-	b, err := get(token, endpoint, nil)
+func (spoc *Spoc) playlists(endpoint string) {
+	b, err := spoc.get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)

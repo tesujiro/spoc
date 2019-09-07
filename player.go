@@ -8,8 +8,8 @@ import (
 	"os"
 )
 
-func devices(token string, endpoint string) {
-	b, err := get(token, endpoint, nil)
+func (spoc *Spoc) devices(endpoint string) {
+	b, err := spoc.get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)
@@ -37,12 +37,12 @@ func devices(token string, endpoint string) {
 	}
 }
 
-func play(token, endpoint, device_id string) {
+func (spoc *Spoc) play(endpoint, device_id string) {
 	params := url.Values{}
 	if device_id != "" {
 		params.Add("device_id", device_id)
 	}
-	b, err := put(token, endpoint, params, nil)
+	b, err := spoc.put(endpoint, params, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)

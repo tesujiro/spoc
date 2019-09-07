@@ -77,8 +77,8 @@ func (album Album) String() string {
 	return s
 }
 
-func album(token string, endpoint string) {
-	b, err := get(token, endpoint, nil)
+func (spoc *Spoc) album(endpoint string) {
+	b, err := spoc.get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)
@@ -92,7 +92,7 @@ func album(token string, endpoint string) {
 	fmt.Printf("%v\n", album)
 }
 
-func albums(token string, endpoint string, ids []string) {
+func (spoc *Spoc) albums(endpoint string, ids []string) {
 	maxRec := 20
 	for start, end := 0, 0; start < len(ids); start += maxRec {
 		if start+maxRec < len(ids) {
@@ -103,7 +103,7 @@ func albums(token string, endpoint string, ids []string) {
 		//fmt.Println("start:", start, "end:", end)
 		params := url.Values{}
 		params.Add("ids", strings.Join(ids[start:end], ","))
-		b, err := get(token, endpoint, params)
+		b, err := spoc.get(endpoint, params)
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
