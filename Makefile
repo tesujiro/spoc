@@ -13,7 +13,7 @@ profile:
 playlist:
 	./cli get playlists
 
-test:
+test: all
 	./test.sh ; echo RESULT=$$?
 
 save-cache:
