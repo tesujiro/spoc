@@ -1,6 +1,10 @@
-package main
+package command
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/tesujiro/spoc/global"
+)
 
 type PagingArtists struct {
 	PagingBase
@@ -21,7 +25,7 @@ type Artist struct {
 }
 
 func (artist Artist) String() string {
-	if flagOnlyIDs {
+	if global.FlagOnlyIDs {
 		return fmt.Sprintf("%v", artist.Id)
 	} else {
 		var ret string

@@ -1,10 +1,13 @@
-package main
+package command
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+	"strings"
+
+	"github.com/tesujiro/spoc/global"
 )
 
 type PagingPlaylists struct {
@@ -42,7 +45,7 @@ type PlaylistTrack struct {
 }
 
 func (playlist Playlist) String() string {
-	if flagOnlyIDs {
+	if global.FlagOnlyIDs {
 		return fmt.Sprintf("%v\n", playlist.Id)
 	} else {
 		var ret string
@@ -55,7 +58,7 @@ func (playlist Playlist) String() string {
 }
 
 func (playlist Playlist) PrintDetail() {
-	if !flagOnlyIDs {
+	if !global.FlagOnlyIDs {
 		fmt.Printf("ID: %v\n", playlist.Id)
 		fmt.Printf("Desc: %v\n", playlist.Description)
 		fmt.Printf("Name: %v\n", playlist.Name)
@@ -63,7 +66,7 @@ func (playlist Playlist) PrintDetail() {
 		fmt.Printf("Tracks: %v\n", playlist.Tracks.Total)
 	}
 	for i, ptrack := range playlist.Tracks.Items {
-		if !flagOnlyIDs {
+		if !global.FlagOnlyIDs {
 			fmt.Printf("Track[%v]:\t", i)
 			fmt.Printf("%v\t", ptrack.Track.Id)
 			fmt.Printf("%v (", ptrack.Track.Name)
@@ -79,8 +82,9 @@ func (playlist Playlist) PrintDetail() {
 	}
 }
 
-func (spoc *Spoc) playlist(endpoint string) {
-	b, err := spoc.get(endpoint, nil)
+func (cmd *Command) GetPlaylist(id string) {
+	endpoint := strings.ReplaceAll(cmd.endpoint("playlist"), "{playlist_id}", id)
+	b, err := cmd.Api.Get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)
@@ -121,8 +125,8 @@ func (spoc *Spoc) playlist(endpoint string) {
 	playlist.PrintDetail()
 }
 
-func (spoc *Spoc) playlists(endpoint string) {
-	b, err := spoc.get(endpoint, nil)
+func (cmd *Command) getPlaylists(endpoint string) {
+	b, err := cmd.Api.Get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)
@@ -136,14 +140,24 @@ func (spoc *Spoc) playlists(endpoint string) {
 		log.Print(err)
 		os.Exit(1)
 	}
-	if !flagOnlyIDs {
+	if !global.FlagOnlyIDs {
 		fmt.Println("Total:", playlists.Total)
 	}
 	for i, playlist := range playlists.Items {
-		if !flagOnlyIDs {
+		if !global.FlagOnlyIDs {
 			fmt.Printf("Playlist[%v]:\t%v\n", i, playlist)
 		} else {
 			fmt.Printf("%v\n", playlist)
 		}
 	}
+}
+
+func (cmd *Command) GetMyPlaylists() {
+	endpoint := cmd.endpoint("playlists/me")
+	cmd.getPlaylists(endpoint)
+}
+
+func (cmd *Command) GetUserPlaylists(id string) {
+	endpoint := strings.ReplaceAll(cmd.endpoint("playlists"), "{user_id}", id)
+	cmd.getPlaylists(endpoint)
 }

@@ -1,46 +1,29 @@
 package main
 
 import (
-	"log"
 	"os"
-	"strings"
+
+	"github.com/tesujiro/spoc/command"
 )
 
 type Spoc struct {
-	token string
+	Command *command.Command
 }
 
 func NewSpoc() *Spoc {
-	//token := ""
-	token, err := getAccessToken() // CAUTION: The access tokens expire after 1 hour.
-	if err != nil {
-		log.Fatal("faild to get access token:", err)
+	return &Spoc{
+		Command: command.New(),
 	}
-	//fmt.Println("token:", token)
-
-	return &Spoc{token: token}
 }
 
 func (spoc *Spoc) Run(cmd string, args []string) {
-	//var err error
-	endpoint := map[string]string{
-		"album":         base_url + "/v1/albums/{id}",
-		"album/tracks":  base_url + "/v1/albums/{id}/tracks",
-		"albums":        base_url + "/v1/albums",
-		"devices/me":    base_url + "/v1/me/player/devices",
-		"search":        base_url + "/v1/search",
-		"play/me":       base_url + "/v1/me/player/play",
-		"play/next":     base_url + "/v1/me/player/next",
-		"play/previous": base_url + "/v1/me/player/previous",
-		"playlist":      base_url + "/v1/playlists/{playlist_id}",
-		"playlists/me":  base_url + "/v1/me/playlists",
-		"playlists":     base_url + "/v1/users/{user_id}/playlists",
-		"profile/me":    base_url + "/v1/me",
-		"profile":       base_url + "/v1/users/{user_id}",
-	}
 	switch cmd {
 	case "search":
-		spoc.search(endpoint["search"], args)
+		if len(args) < 2 {
+			command.Usage()
+			os.Exit(1)
+		}
+		spoc.Command.Search(args)
 	case "get":
 		obj := args[0]
 		args = args[1:]
@@ -48,40 +31,37 @@ func (spoc *Spoc) Run(cmd string, args []string) {
 		case "album", "albums":
 			switch len(args) {
 			case 0:
-				usage()
+				command.Usage()
 				os.Exit(1)
 			case 1:
 				id := args[0]
-				ep := strings.ReplaceAll(endpoint["album"], "{id}", id)
-				spoc.album(ep)
+				spoc.Command.GetAlbum(id)
 			default:
-				spoc.albums(endpoint["albums"], args)
+				ids := args
+				spoc.Command.GetAlbums(ids)
 			}
 		case "profile":
 			if len(args) == 0 {
-				spoc.profile(endpoint["profile/me"])
+				spoc.Command.GetMyProfile()
 			} else {
 				for _, id := range args {
-					ep := strings.ReplaceAll(endpoint["profile"], "{user_id}", id)
-					spoc.profile(ep)
+					spoc.Command.GetUserProfile(id)
 				}
 			}
 		case "playlist":
 			for _, id := range args {
-				ep := strings.ReplaceAll(endpoint["playlist"], "{playlist_id}", id)
-				spoc.playlist(ep)
+				spoc.Command.GetPlaylist(id)
 			}
 		case "playlists":
 			if len(args) == 0 {
-				spoc.playlists(endpoint["playlists/me"])
+				spoc.Command.GetMyPlaylists()
 			} else {
 				for _, id := range args {
-					ep := strings.ReplaceAll(endpoint["playlists"], "{user_id}", id)
-					spoc.playlists(ep)
+					spoc.Command.GetUserPlaylists(id)
 				}
 			}
 		default:
-			usage()
+			command.Usage()
 			os.Exit(1)
 		}
 	case "create":
@@ -92,57 +72,57 @@ func (spoc *Spoc) Run(cmd string, args []string) {
 		}
 	case "list":
 		if len(args) > 1 {
-			usage()
+			command.Usage()
 			os.Exit(1)
 		}
 		obj := args[0]
 		switch obj {
 		case "device", "devices":
-			spoc.devices(endpoint["devices/me"])
+			spoc.Command.GetMyDevices()
 		case "playlists", "playlist":
-			spoc.playlists(endpoint["playlists/me"])
+			spoc.Command.GetMyPlaylists()
 		case "profile":
-			spoc.profile(endpoint["profile/me"])
+			spoc.Command.GetMyProfile()
 		default:
-			usage()
+			command.Usage()
 			os.Exit(1)
 		}
 	case "play":
 		if len(args) == 0 {
-			spoc.play(endpoint["play/me"], "")
+			spoc.Command.PlayOnDevice("")
 			return
 		}
 		switch args[0] {
 		case "next":
 			if len(args) == 1 {
-				spoc.play(endpoint["play/next"], "")
+				spoc.Command.PlayNextOnDevice("")
 			} else if len(args) == 2 {
 				dev := args[1]
-				spoc.play(endpoint["play/next"], dev)
+				spoc.Command.PlayNextOnDevice(dev)
 			} else {
-				usage()
+				command.Usage()
 				os.Exit(1)
 			}
 		case "previous":
 			if len(args) == 1 {
-				spoc.play(endpoint["play/previous"], "")
+				spoc.Command.PlayPreviousOnDevice("")
 			} else if len(args) == 2 {
 				dev := args[1]
-				spoc.play(endpoint["play/previous"], dev)
+				spoc.Command.PlayPreviousOnDevice(dev)
 			} else {
-				usage()
+				command.Usage()
 				os.Exit(1)
 			}
 		default:
 			if len(args) > 1 {
-				usage()
+				command.Usage()
 				os.Exit(1)
 			}
 			dev := args[0]
-			spoc.play(endpoint["play/me"], dev)
+			spoc.Command.PlayOnDevice(dev)
 		}
 	default:
-		usage()
+		command.Usage()
 		os.Exit(1)
 	}
 }

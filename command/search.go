@@ -1,4 +1,4 @@
-package main
+package command
 
 import (
 	"encoding/json"
@@ -6,9 +6,11 @@ import (
 	"log"
 	"net/url"
 	"os"
+
+	"github.com/tesujiro/spoc/global"
 )
 
-func (spoc *Spoc) _search(endpoint, target string, args []string) ([]byte, error) {
+func (cmd *Command) _search(endpoint, target string, args []string) ([]byte, error) {
 	params := url.Values{}
 	params.Add("limit", fmt.Sprintf("%v", 50))
 	params.Add("type", target)
@@ -16,17 +18,15 @@ func (spoc *Spoc) _search(endpoint, target string, args []string) ([]byte, error
 		params.Add("q", arg)
 	}
 	//fmt.Printf("%#v\n", params)
-	return spoc.get(endpoint, params)
+	return cmd.Api.Get(endpoint, params)
 }
 
-func (spoc *Spoc) search(endpoint string, args []string) {
-	if len(args) < 2 {
-		usage()
-		os.Exit(1)
-	}
+func (cmd *Command) Search(args []string) {
+	endpoint := cmd.endpoint("search")
+
 	switch args[0] {
 	case "album", "albums":
-		b, err := spoc._search(endpoint, "album", args[1:])
+		b, err := cmd._search(endpoint, "album", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
@@ -39,7 +39,7 @@ func (spoc *Spoc) search(endpoint string, args []string) {
 			log.Print(err)
 			os.Exit(1)
 		}
-		if !flagOnlyIDs {
+		if !global.FlagOnlyIDs {
 			fmt.Println("Total:", albums.Albums.Total)
 		}
 		/*
@@ -68,14 +68,14 @@ func (spoc *Spoc) search(endpoint string, args []string) {
 		*/
 		// display album info
 		for i, album := range albums.Albums.Items {
-			if !flagOnlyIDs {
+			if !global.FlagOnlyIDs {
 				fmt.Printf("Album[%v]:\t%v\n", i, album)
 			} else {
 				fmt.Printf("%v\n", album)
 			}
 		}
 	case "artist", "artists":
-		b, err := spoc._search(endpoint, "artist", args[1:])
+		b, err := cmd._search(endpoint, "artist", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
@@ -88,18 +88,18 @@ func (spoc *Spoc) search(endpoint string, args []string) {
 			log.Print(err)
 			os.Exit(1)
 		}
-		if !flagOnlyIDs {
+		if !global.FlagOnlyIDs {
 			fmt.Println("Total:", artists.Artists.Total)
 		}
 		for i, artist := range artists.Artists.Items {
-			if flagOnlyIDs {
+			if global.FlagOnlyIDs {
 				fmt.Printf("%v\n", artist.Id)
 			} else {
 				fmt.Printf("Artists[%v]:\t%v\n", i, artist)
 			}
 		}
 	case "playlist", "playlists":
-		b, err := spoc._search(endpoint, "playlist", args[1:])
+		b, err := cmd._search(endpoint, "playlist", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
@@ -112,11 +112,11 @@ func (spoc *Spoc) search(endpoint string, args []string) {
 			log.Print(err)
 			os.Exit(1)
 		}
-		if !flagOnlyIDs {
+		if !global.FlagOnlyIDs {
 			fmt.Println("Total:", playlists.Playlists.Total)
 		}
 		for i, playlist := range playlists.Playlists.Items {
-			if !flagOnlyIDs {
+			if !global.FlagOnlyIDs {
 				fmt.Printf("Playlist[%v]:\t", i)
 				fmt.Printf("%v\t", playlist.Id)
 				fmt.Printf("tracks:%v\t", playlist.Tracks.Total)
@@ -127,7 +127,7 @@ func (spoc *Spoc) search(endpoint string, args []string) {
 			}
 		}
 	case "track", "tracks":
-		b, err := spoc._search(endpoint, "track", args[1:])
+		b, err := cmd._search(endpoint, "track", args[1:])
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
@@ -140,18 +140,18 @@ func (spoc *Spoc) search(endpoint string, args []string) {
 			log.Print(err)
 			os.Exit(1)
 		}
-		if !flagOnlyIDs {
+		if !global.FlagOnlyIDs {
 			fmt.Println("Total:", tracks.Tracks.Total)
 		}
 		for i, track := range tracks.Tracks.Items {
-			if !flagOnlyIDs {
+			if !global.FlagOnlyIDs {
 				fmt.Printf("Track[%v]:\t%v\n", i, track)
 			} else {
 				fmt.Printf("%v\n", track.Id)
 			}
 		}
 	default:
-		usage()
+		Usage()
 		os.Exit(1)
 	}
 }

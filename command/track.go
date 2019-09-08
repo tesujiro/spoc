@@ -1,6 +1,10 @@
-package main
+package command
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/tesujiro/spoc/global"
+)
 
 type PagingTracks struct {
 	PagingBase
@@ -44,7 +48,7 @@ type Track struct {
 //}
 
 func (track Track) String() string {
-	if flagOnlyIDs {
+	if global.FlagOnlyIDs {
 		return fmt.Sprintf("%v\n", track.Id)
 	} else {
 		var ret string

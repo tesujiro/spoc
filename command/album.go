@@ -1,4 +1,4 @@
-package main
+package command
 
 import (
 	"encoding/json"
@@ -7,6 +7,8 @@ import (
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/tesujiro/spoc/global"
 )
 
 type PagingAlbums struct {
@@ -42,7 +44,7 @@ type Album struct {
 }
 
 func (album SimplifiedAlbum) String() string {
-	if flagOnlyIDs {
+	if global.FlagOnlyIDs {
 		return fmt.Sprintf("%v", album.Id)
 	}
 	var s string
@@ -58,7 +60,7 @@ func (album SimplifiedAlbum) String() string {
 }
 
 func (album Album) String() string {
-	if flagOnlyIDs {
+	if global.FlagOnlyIDs {
 		return fmt.Sprintf("%v", album.Id)
 	}
 	var s string
@@ -77,8 +79,9 @@ func (album Album) String() string {
 	return s
 }
 
-func (spoc *Spoc) album(endpoint string) {
-	b, err := spoc.get(endpoint, nil)
+func (cmd *Command) GetAlbum(id string) {
+	endpoint := strings.ReplaceAll(cmd.endpoint("album"), "{id}", id)
+	b, err := cmd.Api.Get(endpoint, nil)
 	if err != nil {
 		log.Print(err)
 		os.Exit(1)
@@ -92,7 +95,8 @@ func (spoc *Spoc) album(endpoint string) {
 	fmt.Printf("%v\n", album)
 }
 
-func (spoc *Spoc) albums(endpoint string, ids []string) {
+func (cmd *Command) GetAlbums(ids []string) {
+	endpoint := cmd.endpoint("albums")
 	maxRec := 20
 	for start, end := 0, 0; start < len(ids); start += maxRec {
 		if start+maxRec < len(ids) {
@@ -100,15 +104,13 @@ func (spoc *Spoc) albums(endpoint string, ids []string) {
 		} else {
 			end = len(ids)
 		}
-		//fmt.Println("start:", start, "end:", end)
 		params := url.Values{}
 		params.Add("ids", strings.Join(ids[start:end], ","))
-		b, err := spoc.get(endpoint, params)
+		b, err := cmd.Api.Get(endpoint, params)
 		if err != nil {
 			log.Print(err)
 			os.Exit(1)
 		}
-		//fmt.Println(string(b))
 		var albums struct {
 			Albums []Album
 		}
@@ -118,7 +120,7 @@ func (spoc *Spoc) albums(endpoint string, ids []string) {
 			os.Exit(1)
 		}
 		for i, album := range albums.Albums {
-			if flagOnlyIDs {
+			if global.FlagOnlyIDs {
 				fmt.Println(album)
 			} else {
 				fmt.Printf("Album[%v]: %s\n", start+i, album)
