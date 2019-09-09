@@ -64,12 +64,12 @@ func (spoc *Spoc) Run(cmd string, args []string) {
 			command.Usage()
 			os.Exit(1)
 		}
-	case "create":
-		obj := args[0]
-		args = args[1:]
-		switch obj {
-		case "playlist":
-		}
+	//case "create":
+	//obj := args[0]
+	//args = args[1:]
+	//switch obj {
+	//case "playlist":
+	//}
 	case "list":
 		if len(args) > 1 {
 			command.Usage()

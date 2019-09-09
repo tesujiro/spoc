@@ -15,6 +15,10 @@ playlist:
 
 test: all
 	./test.sh ; echo RESULT=$$?
+proxy:
+	./reverse-proxy/reverse-proxy ./reverse-proxy/cache.gob &
+	sleep 0.1
+	curl -X GET "http://localhost:8080/load"
 
 save-cache:
 	curl -X GET "http://localhost:8080/save"
