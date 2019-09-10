@@ -10,6 +10,12 @@ import (
 	"github.com/tesujiro/spoc/global"
 )
 
+type PlayerError struct {
+	Status  int
+	Message string
+	Reason  string
+}
+
 type CurrentlyPlayingContext struct {
 	Device               Device
 	Repeat_state         string
@@ -49,6 +55,7 @@ func (cmd *Command) GetCurrentPlaybackOnDevice(device_id string) {
 	}
 	fmt.Printf("Device:\n\t%v\n", ret.Device)
 	fmt.Printf("Track:\n\t%v\n", ret.Item)
+	fmt.Printf("Progress:\n\t%vsec\n", ret.ProgressMs/1000)
 }
 
 func (cmd *Command) GetMyDevices() {
@@ -80,9 +87,24 @@ func (cmd *Command) play(endpoint, device_id string) {
 	if device_id != "" {
 		params.Add("device_id", device_id)
 	}
-	b, err := cmd.Api.Put(endpoint, params, nil)
+	b, err := cmd.Api.Put(endpoint, params, nil) // Method: PUT
 	if err != nil {
 		log.Print(err)
+		fmt.Printf("response: %v\n", string(b))
+		os.Exit(1)
+	}
+	fmt.Printf("response: %v\n", string(b))
+}
+
+func (cmd *Command) skip(endpoint, device_id string) {
+	params := url.Values{}
+	if device_id != "" {
+		params.Add("device_id", device_id)
+	}
+	b, err := cmd.Api.Post(endpoint, params, nil) // Method: POST
+	if err != nil {
+		log.Print(err)
+		fmt.Printf("response: %v\n", string(b))
 		os.Exit(1)
 	}
 	fmt.Printf("response: %v\n", string(b))
@@ -94,14 +116,20 @@ func (cmd *Command) PlayOnDevice(device_id string) {
 	return
 }
 
+func (cmd *Command) PauseOnDevice(device_id string) {
+	endpoint := cmd.endpoint("pause/me")
+	cmd.play(endpoint, device_id)
+	return
+}
+
 func (cmd *Command) PlayNextOnDevice(device_id string) {
 	endpoint := cmd.endpoint("play/next")
-	cmd.play(endpoint, device_id)
+	cmd.skip(endpoint, device_id)
 	return
 }
 
 func (cmd *Command) PlayPreviousOnDevice(device_id string) {
 	endpoint := cmd.endpoint("play/previous")
-	cmd.play(endpoint, device_id)
+	cmd.skip(endpoint, device_id)
 	return
 }

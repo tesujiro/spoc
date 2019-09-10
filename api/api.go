@@ -49,6 +49,10 @@ func (api *Api) Put(endpoint string, params url.Values, body io.Reader) ([]byte,
 	return api.call("PUT", endpoint, params, body)
 }
 
+func (api *Api) Post(endpoint string, params url.Values, body io.Reader) ([]byte, error) {
+	return api.call("POST", endpoint, params, body)
+}
+
 func (api *Api) call(method, endpoint string, params url.Values, body io.Reader) ([]byte, error) {
 	if os.Getenv("ReverseProxy") != "" {
 		proxy := os.Getenv("ReverseProxy")
@@ -82,8 +86,9 @@ func (api *Api) call(method, endpoint string, params url.Values, body io.Reader)
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 400 {
-		fmt.Printf("response.Body=%#v\n", resp.Body)
-		return nil, fmt.Errorf("bad response status code %d", resp.StatusCode)
+		b, _ := ioutil.ReadAll(resp.Body)
+		//fmt.Printf("response.Body=%#v\n", string(b))
+		return b, fmt.Errorf("bad response status code %d", resp.StatusCode)
 	}
 	//fmt.Println("response status code ", resp.StatusCode)
 
