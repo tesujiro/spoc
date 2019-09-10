@@ -9,6 +9,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/tesujiro/exp_spotify/reverse-proxy/easyCache"
 )
@@ -152,7 +153,7 @@ func (t *myTransport) RoundTrip(request *http.Request) (*http.Response, error) {
 
 	cacheKey := request.URL.String()
 	var canCache bool = false
-	if request.Method == "GET" {
+	if request.Method == "GET" && !strings.Contains(cacheKey, "/me/player") {
 		canCache = true
 	}
 	if canCache {
