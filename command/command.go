@@ -26,9 +26,10 @@ func Usage() {
 	spoc [-id] list device(s)
 	spoc [-id] list playlist(s)
 	spoc [-id] list profile
-	spoc [-id] play [device_id]
-	spoc [-id] play next [device_id]
-	spoc [-id] play previous [device_id]
+	spoc play [device_id]
+	spoc play current [device_id]
+	spoc play next [device_id]
+	spoc play previous [device_id]
 `)
 }
 
@@ -39,6 +40,7 @@ func (cmd *Command) endpoint(key string) string {
 		"albums":        "/v1/albums",
 		"devices/me":    "/v1/me/player/devices",
 		"search":        "/v1/search",
+		"play":          "/v1/me/player",
 		"play/me":       "/v1/me/player/play",
 		"play/next":     "/v1/me/player/next",
 		"play/previous": "/v1/me/player/previous",

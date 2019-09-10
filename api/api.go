@@ -62,6 +62,9 @@ func (api *Api) call(method, endpoint string, params url.Values, body io.Reader)
 	}
 
 	baseUrl.RawQuery = params.Encode() // Escape Query Parameters
+	if global.FlagRawJson {
+		fmt.Println(baseUrl)
+	}
 
 	req, err := http.NewRequest(method, baseUrl.String(), body)
 	if err != nil {

@@ -93,6 +93,16 @@ func (spoc *Spoc) Run(cmd string, args []string) {
 			return
 		}
 		switch args[0] {
+		case "current":
+			if len(args) == 1 {
+				spoc.Command.GetCurrentPlaybackOnDevice("")
+			} else if len(args) == 2 {
+				dev := args[1]
+				spoc.Command.GetCurrentPlaybackOnDevice(dev)
+			} else {
+				command.Usage()
+				os.Exit(1)
+			}
 		case "next":
 			if len(args) == 1 {
 				spoc.Command.PlayNextOnDevice("")

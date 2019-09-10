@@ -107,9 +107,15 @@ func getAccessToken() (string, error) {
 		ClientSecret: clientSecret,
 		Scopes: []string{
 			// CAUTION: set scopes for APIs
-			"user-read-playback-state",
+			"app-remote-control",
 			"playlist-read-private",
+			"streaming",
+			"user-library-modify",
+			"user-library-read",
 			"user-modify-playback-state",
+			"user-read-currently-playing",
+			"user-read-playback-state",
+			"user-read-recently-played",
 		},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://accounts.spotify.com/authorize",

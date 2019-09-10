@@ -1,7 +1,10 @@
 package command
 
 import (
+	"fmt"
 	"time"
+
+	"github.com/tesujiro/spoc/global"
 )
 
 type Timestamp time.Time
@@ -13,6 +16,13 @@ type PagingBase struct {
 	Total    int
 	Next     string
 	Previous string
+}
+
+type Context struct {
+	Type         string
+	Href         string
+	ExternalURLs ExternalURLs `json:"external_urls"`
+	Uri          string
 }
 
 type ExternalIDs map[string]string
@@ -55,4 +65,16 @@ type Device struct {
 	Name             string
 	Type             string
 	VolumePercent    int `json:"volume_percent"`
+}
+
+func (device Device) String() string {
+	if global.FlagOnlyIDs {
+		return fmt.Sprintf("%v", device.Id)
+	}
+	var s string
+	s += fmt.Sprintf("%v\t", device.Id)
+	s += fmt.Sprintf("name:%v\t", device.Name)
+	s += fmt.Sprintf("type:%v\t", device.Type)
+	s += fmt.Sprintf("vol:%v%%\t", device.VolumePercent)
+	return s
 }
