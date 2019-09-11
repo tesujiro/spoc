@@ -82,10 +82,13 @@ func (cmd *Command) GetMyDevices() {
 	}
 }
 
-func (cmd *Command) play(endpoint, device_id string) {
+func (cmd *Command) play(endpoint, device_id string, pos_ms int) {
 	params := url.Values{}
 	if device_id != "" {
 		params.Add("device_id", device_id)
+	}
+	if pos_ms > 0 {
+		params.Add("position_ms", fmt.Sprintf("%v", pos_ms))
 	}
 	b, err := cmd.Api.Put(endpoint, params, nil) // Method: PUT
 	if err != nil {
@@ -112,13 +115,20 @@ func (cmd *Command) skip(endpoint, device_id string) {
 
 func (cmd *Command) PlayOnDevice(device_id string) {
 	endpoint := cmd.endpoint("play/me")
-	cmd.play(endpoint, device_id)
+	cmd.play(endpoint, device_id, 0)
 	return
 }
 
 func (cmd *Command) PauseOnDevice(device_id string) {
 	endpoint := cmd.endpoint("pause/me")
-	cmd.play(endpoint, device_id)
+	cmd.play(endpoint, device_id, 0)
+	return
+}
+
+func (cmd *Command) SeekOnDevice(device_id string, pos_ms int) {
+	//TODO: check the length of currently playing song, if posision is longer than the length, return an error.
+	endpoint := cmd.endpoint("seek")
+	cmd.play(endpoint, device_id, pos_ms)
 	return
 }
 

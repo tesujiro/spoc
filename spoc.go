@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strconv"
 
 	"github.com/tesujiro/spoc/command"
 )
@@ -125,13 +126,31 @@ func (spoc *Spoc) Run(cmd string, args []string) {
 		if len(args) == 0 {
 			spoc.Command.PauseOnDevice("")
 			return
-		} else if len(args) == 0 {
+		} else if len(args) == 1 {
 			dev := args[0]
 			spoc.Command.PauseOnDevice(dev)
 		} else {
 			command.Usage()
 			os.Exit(1)
 		}
+	case "seek":
+		var dev, pos_sec string
+		if len(args) == 1 {
+			pos_sec = args[0]
+			dev = ""
+		} else if len(args) == 2 {
+			pos_sec = args[0]
+			dev = args[1]
+		} else {
+			command.Usage()
+			os.Exit(1)
+		}
+		pos, err := strconv.Atoi(pos_sec)
+		if err != nil {
+			command.Usage()
+			os.Exit(1)
+		}
+		spoc.Command.SeekOnDevice(dev, pos*1000)
 	case "playing":
 		if len(args) == 0 {
 			spoc.Command.GetCurrentPlaybackOnDevice("")

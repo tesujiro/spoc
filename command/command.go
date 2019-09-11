@@ -29,6 +29,7 @@ func Usage() {
 	spoc play [device_id]
 	spoc pause [device_id]
 	spoc playing [device_id]
+	spoc seek [position_ms] [device_id]
 	spoc play next [device_id]
 	spoc play previous [device_id]
 `)
@@ -44,6 +45,7 @@ func (cmd *Command) endpoint(key string) string {
 		"play":          "/v1/me/player",
 		"play/me":       "/v1/me/player/play",
 		"pause/me":      "/v1/me/player/pause",
+		"seek":          "/v1/me/player/seek",
 		"play/next":     "/v1/me/player/next",
 		"play/previous": "/v1/me/player/previous",
 		"playlist":      "/v1/playlists/{playlist_id}",
@@ -52,6 +54,11 @@ func (cmd *Command) endpoint(key string) string {
 		"profile/me":    "/v1/me",
 		"profile":       "/v1/users/{user_id}",
 	}
+	ep, ok := endpoint[key]
+	if !ok {
+		fmt.Printf("no endpoint key:%v\n", key)
+		panic(1)
+	}
 
-	return cmd.Api.Base_url + endpoint[key]
+	return cmd.Api.Base_url + ep
 }
