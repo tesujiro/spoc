@@ -21,8 +21,8 @@ type PagingPlaylistTracks struct {
 }
 
 type Playlist struct {
-	Collaborative bool
-	Description   string
+	Collaborative *bool
+	Description   *string
 	ExternalURLs  ExternalURLs `json:"external_urls"`
 	Followers     Followers
 	Href          string
@@ -30,7 +30,7 @@ type Playlist struct {
 	Images        []Image
 	Name          string
 	Owner         User
-	Public        bool
+	Public        *bool
 	SnapshotId    string `json:"snapshot_id"`
 	Tracks        PagingPlaylistTracks
 	Type          string
@@ -49,10 +49,18 @@ func (playlist Playlist) String() string {
 		return fmt.Sprintf("%v\n", playlist.Id)
 	} else {
 		var ret string
-		ret += fmt.Sprintf("%v\t", playlist.Id)
-		ret += fmt.Sprintf("tracks:%v\t", playlist.Tracks.Total)
-		ret += fmt.Sprintf("name:%v\t", playlist.Name)
-		ret += fmt.Sprintf("desc:%v\t", playlist.Description)
+		ret += fmt.Sprintf("%v", playlist.Id)
+		//if playlist.Public != nil {
+		//ret += fmt.Sprintf("public:%v\t", *playlist.Public)
+		//}
+		//if playlist.Collaborative != nil {
+		//ret += fmt.Sprintf("collaborative:%v\t", *playlist.Collaborative)
+		//}
+		ret += fmt.Sprintf("\ttracks:%v", playlist.Tracks.Total)
+		ret += fmt.Sprintf("\tname:%v", playlist.Name)
+		if playlist.Description != nil {
+			ret += fmt.Sprintf("\tdesc:%v", *playlist.Description)
+		}
 		return ret
 	}
 }
@@ -60,7 +68,15 @@ func (playlist Playlist) String() string {
 func (playlist Playlist) PrintDetail() {
 	if !global.FlagOnlyIDs {
 		fmt.Printf("ID: %v\n", playlist.Id)
-		fmt.Printf("Desc: %v\n", playlist.Description)
+		if playlist.Public != nil {
+			fmt.Printf("public:%v\t", *playlist.Public)
+		}
+		if playlist.Collaborative != nil {
+			fmt.Printf("collaborative:%v\t", *playlist.Collaborative)
+		}
+		if playlist.Description != nil {
+			fmt.Printf("Desc: %v\n", *playlist.Description)
+		}
 		fmt.Printf("Name: %v\n", playlist.Name)
 		//fmt.Printf("Owner: %+v\n", playlist.Owner)
 		fmt.Printf("Tracks: %v\n", playlist.Tracks.Total)
