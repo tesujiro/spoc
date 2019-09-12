@@ -23,6 +23,7 @@ func Usage() {
 	spoc [-id] get profile [user_id]+
 	spoc [-id] get playlist [playlist_id]+
 	spoc [-id] get playlists [user_id]+
+	spoc [-id] get track(s) [track_id]+
 	spoc [-id] list device(s)
 	spoc [-id] list playlist(s)
 	spoc [-id] list profile
@@ -53,6 +54,8 @@ func (cmd *Command) endpoint(key string) string {
 		"playlists":     "/v1/users/{user_id}/playlists",
 		"profile/me":    "/v1/me",
 		"profile":       "/v1/users/{user_id}",
+		"track":         "/v1/tracks/{id}",
+		"tracks":        "/v1/tracks",
 	}
 	ep, ok := endpoint[key]
 	if !ok {

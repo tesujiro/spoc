@@ -61,6 +61,18 @@ func (spoc *Spoc) Run(cmd string, args []string) {
 					spoc.Command.GetUserPlaylists(id)
 				}
 			}
+		case "track", "tracks":
+			switch len(args) {
+			case 0:
+				command.Usage()
+				os.Exit(1)
+			case 1:
+				id := args[0]
+				spoc.Command.GetTrack(id)
+			default:
+				ids := args
+				spoc.Command.GetTracks(ids)
+			}
 		default:
 			command.Usage()
 			os.Exit(1)

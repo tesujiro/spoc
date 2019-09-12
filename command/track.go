@@ -1,7 +1,12 @@
 package command
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
+	"net/url"
+	"os"
+	"strings"
 
 	"github.com/tesujiro/spoc/global"
 )
@@ -61,6 +66,58 @@ func (track Track) String() string {
 			sep = ", "
 		}
 		ret += fmt.Sprintf(") album: \"%v\"", track.Album.Name)
+		ret += fmt.Sprintf(" release: %v", track.Album.ReleaseDate)
+		ret += fmt.Sprintf(" duration: %vsec", track.DurationMs/1000)
 		return ret
+	}
+}
+
+func (cmd *Command) GetTrack(id string) {
+	endpoint := strings.ReplaceAll(cmd.endpoint("track"), "{id}", id)
+	b, err := cmd.Api.Get(endpoint, nil)
+	if err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	var track Track
+	err = json.Unmarshal(b, &track)
+	if err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	fmt.Printf("%v\n", track)
+}
+
+func (cmd *Command) GetTracks(ids []string) {
+	endpoint := cmd.endpoint("tracks")
+	maxRec := 50
+	for start, end := 0, 0; start < len(ids); start += maxRec {
+		if start+maxRec < len(ids) {
+			end = start + maxRec
+		} else {
+			end = len(ids)
+		}
+		params := url.Values{}
+		params.Add("ids", strings.Join(ids[start:end], ","))
+		b, err := cmd.Api.Get(endpoint, params)
+		if err != nil {
+			log.Print(err)
+			os.Exit(1)
+		}
+		var tracks struct {
+			Tracks []Track
+		}
+		err = json.Unmarshal(b, &tracks)
+		if err != nil {
+			log.Print(err)
+			os.Exit(1)
+		}
+		for i, track := range tracks.Tracks {
+			if global.FlagOnlyIDs {
+				fmt.Println(track)
+			} else {
+				fmt.Printf("Track[%v]: %s\n", start+i, track)
+			}
+		}
 	}
 }
