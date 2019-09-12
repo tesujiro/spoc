@@ -47,6 +47,10 @@ func (cmd *Command) GetCurrentPlaybackOnDevice(device_id string) {
 		log.Print(err)
 		os.Exit(1)
 	}
+	if len(b) == 0 {
+		fmt.Println("No available devices are found")
+		return
+	}
 	var ret CurrentlyPlayingContext
 	err = json.Unmarshal(b, &ret)
 	if err != nil {
