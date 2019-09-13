@@ -1,8 +1,9 @@
 # spoc
-spotify web api CLI
+Spotify web api CLI
 
 # Usage Example
 ```
-
+under construcion..
+coming soon.
 
 ```
