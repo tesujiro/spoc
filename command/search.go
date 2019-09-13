@@ -17,7 +17,6 @@ func (cmd *Command) _search(endpoint, target string, args []string) ([]byte, err
 	for _, arg := range args {
 		params.Add("q", arg)
 	}
-	//fmt.Printf("%#v\n", params)
 	return cmd.Api.Get(endpoint, params)
 }
 
@@ -118,11 +117,6 @@ func (cmd *Command) Search(args []string) {
 		for i, playlist := range playlists.Playlists.Items {
 			if !global.FlagOnlyIDs {
 				fmt.Printf("Playlist[%v]:\t%v\n", i, playlist)
-				//fmt.Printf("Playlist[%v]:\t", i)
-				//fmt.Printf("%v\t", playlist.Id)
-				//fmt.Printf("tracks:%v\t", playlist.Tracks.Total)
-				//fmt.Printf("name:%v", playlist.Name)
-				//fmt.Printf("\n")
 			} else {
 				fmt.Printf("%v\n", playlist.Id)
 			}
