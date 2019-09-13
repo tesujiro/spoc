@@ -29,8 +29,8 @@ func (artist Artist) String() string {
 		return fmt.Sprintf("%v", artist.Id)
 	} else {
 		var ret string
-		ret += fmt.Sprintf("%v\t", artist.Id)
-		ret += fmt.Sprintf("name:%v\t", artist.Name)
+		ret += fmt.Sprintf("\t%v", artist.Id)
+		ret += fmt.Sprintf("\tname:%v", artist.Name)
 		return ret
 	}
 }

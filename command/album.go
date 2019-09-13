@@ -48,11 +48,11 @@ func (album SimplifiedAlbum) String() string {
 		return fmt.Sprintf("%v", album.Id)
 	}
 	var s string
-	s += fmt.Sprintf("%v\t", album.Id)
-	s += fmt.Sprintf("name:%v\t", album.Name)
-	s += fmt.Sprintf("release:%v\t", album.ReleaseDate)
-	s += fmt.Sprintf("tracks:%v\t", album.TotalTracks)
-	s += fmt.Sprintf("artists:")
+	s += fmt.Sprintf("%v", album.Id)
+	s += fmt.Sprintf("\tname:%v", album.Name)
+	s += fmt.Sprintf("\trelease:%v", album.ReleaseDate)
+	s += fmt.Sprintf("\ttracks:%v", album.TotalTracks)
+	s += fmt.Sprintf("\tartists:")
 	for _, artist := range album.Artists {
 		s += fmt.Sprintf(" %v", artist.Name)
 	}
@@ -65,10 +65,10 @@ func (album Album) String() string {
 	}
 	var s string
 	s += fmt.Sprintf("%v\t", album.Id)
-	s += fmt.Sprintf("name:%v\t", album.Name)
-	s += fmt.Sprintf("release:%v\t", album.ReleaseDate)
-	s += fmt.Sprintf("label:%v\t", album.Label)
-	s += fmt.Sprintf("artists:")
+	s += fmt.Sprintf("\tname:%v", album.Name)
+	s += fmt.Sprintf("\trelease:%v", album.ReleaseDate)
+	s += fmt.Sprintf("\tlabel:%v", album.Label)
+	s += fmt.Sprintf("\tartists:")
 	for _, artist := range album.Artists {
 		s += fmt.Sprintf(" %v", artist.Name)
 	}
