@@ -72,6 +72,47 @@ func (track Track) String() string {
 	}
 }
 
+type AudioFeatures struct {
+	Acousticness     float32
+	AnalysisURL      string `json:"analysis_url"`
+	Danceability     float32
+	DurationMs       int `json:"duration_ms"`
+	Energy           float32
+	Id               string
+	Instrumentalness float32
+	Key              int
+	Liveness         float32
+	Loudness         float32
+	Mode             int
+	Speechiness      float32
+	Tempo            float32
+	TimeSignature    int    `json:"time_signature"`
+	TrackHref        string `json:"track_href"`
+	Type             string
+	URI              string
+	Valence          float32
+}
+
+func (features AudioFeatures) String() string {
+	if global.FlagOnlyIDs {
+		return fmt.Sprintf("%v\n", features.Id)
+	} else {
+		var ret string
+		ret += fmt.Sprintf("%v", features.Id)
+		ret += fmt.Sprintf("\tduration:%vms", features.DurationMs)
+		ret += fmt.Sprintf("\tkey:%v", features.Key)
+		ret += fmt.Sprintf("\tmode:%v", features.Mode)
+		ret += fmt.Sprintf("\ttempo:%v", features.Tempo)
+		ret += fmt.Sprintf("\ttime signature:%v", features.TimeSignature)
+		ret += fmt.Sprintf("\tvalence:%v", features.Valence)
+		ret += fmt.Sprintf("\tdanceability:%v", features.Danceability)
+		ret += fmt.Sprintf("\tenergy:%v", features.Energy)
+		ret += fmt.Sprintf("\tenergy:%v", features.Energy)
+		ret += fmt.Sprintf("\tloudness:%v", features.Loudness)
+		return ret
+	}
+}
+
 func (cmd *Command) GetTrack(id string) {
 	endpoint := strings.ReplaceAll(cmd.endpoint("track"), "{id}", id)
 	b, err := cmd.Api.Get(endpoint, nil)
