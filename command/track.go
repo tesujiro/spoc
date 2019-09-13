@@ -57,9 +57,8 @@ func (track Track) String() string {
 		return fmt.Sprintf("%v\n", track.Id)
 	} else {
 		var ret string
-		ret += fmt.Sprintf("%v\t", track.Id)
-		ret += fmt.Sprintf("name:%v\t", track.Name)
-		ret += fmt.Sprintf("%v (", track.Name)
+		ret += fmt.Sprintf("%v", track.Id)
+		ret += fmt.Sprintf(" name:%v (", track.Name)
 		sep := ""
 		for _, a := range track.Artists {
 			ret += fmt.Sprintf("%v%v", sep, a.Name)
