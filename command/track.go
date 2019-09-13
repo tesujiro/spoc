@@ -103,11 +103,14 @@ func (features AudioFeatures) String() string {
 		ret += fmt.Sprintf("\tmode:%v", features.Mode)
 		ret += fmt.Sprintf("\ttempo:%v", features.Tempo)
 		ret += fmt.Sprintf("\ttime signature:%v", features.TimeSignature)
-		ret += fmt.Sprintf("\tvalence:%v", features.Valence)
+		ret += fmt.Sprintf("\tacousticness:%v", features.Acousticness)
 		ret += fmt.Sprintf("\tdanceability:%v", features.Danceability)
 		ret += fmt.Sprintf("\tenergy:%v", features.Energy)
-		ret += fmt.Sprintf("\tenergy:%v", features.Energy)
+		ret += fmt.Sprintf("\tinstrumentalness:%v", features.Instrumentalness)
+		ret += fmt.Sprintf("\tliveness:%v", features.Liveness)
 		ret += fmt.Sprintf("\tloudness:%v", features.Loudness)
+		ret += fmt.Sprintf("\tspeechiness:%v", features.Speechiness)
+		ret += fmt.Sprintf("\tvalence:%v", features.Valence)
 		return ret
 	}
 }
@@ -160,4 +163,20 @@ func (cmd *Command) GetTracks(ids []string) {
 			}
 		}
 	}
+}
+
+func (cmd *Command) GetAudioFeature(id string) {
+	endpoint := strings.ReplaceAll(cmd.endpoint("audio-features"), "{id}", id)
+	b, err := cmd.Api.Get(endpoint, nil)
+	if err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	var features AudioFeatures
+	err = json.Unmarshal(b, &features)
+	if err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	fmt.Printf("%v\n", features)
 }

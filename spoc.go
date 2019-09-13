@@ -41,6 +41,20 @@ func (spoc *Spoc) Run(cmd string, args []string) {
 				ids := args
 				spoc.Command.GetAlbums(ids)
 			}
+		case "feature", "features":
+			switch len(args) {
+			case 0:
+				command.Usage()
+				os.Exit(1)
+			case 1:
+				id := args[0]
+				spoc.Command.GetAudioFeature(id)
+				/*
+					default:
+						ids := args
+						spoc.Command.GetAudioFeatures(ids)
+				*/
+			}
 		case "profile":
 			if len(args) == 0 {
 				spoc.Command.GetMyProfile()
