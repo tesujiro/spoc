@@ -60,9 +60,9 @@ Album[13]:      40hhweFSHpwlFImxj8qrcO  name:Late       release:2018-06-06      
 > spoc list device
 Device[0]:      eb2f5b8b312c7b67b23aba0586f20e3860286de3        name:mbp2016late        type:Computer   vol:100%        
 Device[1]:      ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9        name:HUAWEI Mate 9      type:Smartphone vol:100%        
-> spoc tesujiro$ ./spoc play ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9
-> spoc tesujiro$ ./spoc pause ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9
-> spoc tesujiro$ ./spoc play next ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9
+> spoc play ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9
+> spoc pause ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9
+> spoc play next ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9
 > 
 ```
 # Please note that the master branch is not stable
