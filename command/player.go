@@ -100,7 +100,7 @@ func (cmd *Command) play(endpoint, device_id string, pos_ms int) {
 		fmt.Printf("response: %v\n", string(b))
 		os.Exit(1)
 	}
-	fmt.Printf("response: %v\n", string(b))
+	//fmt.Printf("response: %v\n", string(b))
 }
 
 func (cmd *Command) skip(endpoint, device_id string) {
@@ -114,7 +114,7 @@ func (cmd *Command) skip(endpoint, device_id string) {
 		fmt.Printf("response: %v\n", string(b))
 		os.Exit(1)
 	}
-	fmt.Printf("response: %v\n", string(b))
+	//fmt.Printf("response: %v\n", string(b))
 }
 
 func (cmd *Command) PlayOnDevice(device_id string) {
