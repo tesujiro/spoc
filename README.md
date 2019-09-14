@@ -65,3 +65,5 @@ Device[1]:      ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9        name:HUAWEI Mate
 > spoc tesujiro$ ./spoc play next ffc16eaec9733d7ddebdcd5c7ae737dbc6b79fd9
 > 
 ```
+# Please note that the master branch is not stable
+The master branch language and API may change at any time.
