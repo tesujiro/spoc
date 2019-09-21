@@ -7,11 +7,11 @@ Spotify web api CLI
 ```
 
 # Setup
+1. Register an application at: https://developer.spotify.com/my-applications/
+    - Use "http://localhost:8989" as the redirect URI
+2. Set the ClientID environment variable to the client ID you got in step 1.
+3. Set the ClientSecret environment variable to the client secret from step 1.
 ```
-//  1. Register an application at: https://developer.spotify.com/my-applications/
-//       - Use "http://localhost:8989" as the redirect URI
-//  2. Set the ClientID environment variable to the client ID you got in step 1.
-//  3. Set the ClientSecret environment variable to the client secret from step 1.
 > export ClientID=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 > export ClientSecret=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
